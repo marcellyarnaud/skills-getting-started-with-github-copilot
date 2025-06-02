@@ -20,25 +20,23 @@ document.addEventListener("DOMContentLoaded", () => {
 
         const spotsLeft = details.max_participants - details.participants.length;
 
-        // Cria a lista de participantes (ou mensagem se não houver)
-        let participantsSection = "";
-        if (details.participants.length > 0) {
-          participantsSection = `
-            <div class="participants-section">
-              <strong>Participantes:</strong>
-              <ul class="participants-list">
-                ${details.participants.map(p => `<li>${p}</li>`).join("")}
-              </ul>
-            </div>
-          `;
-        } else {
-          participantsSection = `
-            <div class="participants-section">
-              <strong>Participantes:</strong>
-              <span class="no-participants">Nenhum participante inscrito ainda.</span>
-            </div>
-          `;
-        }
+        // Creates the participants list (or message if there are none)
+        const participantsInnerContent = details.participants.length > 0
+          ? `<ul class="participants-list">
+               ${details.participants.map(p => `<li>${p}</li>`).join("")}
+             </ul>`
+          : `<span class="no-participants">Nenhum participante inscrito ainda.</span>`;
+
+                ${details.participants.map(p => {
+                  const li = document.createElement("li");
+                  li.textContent = p;
+                  return li.outerHTML;
+                }).join("")}
+          <div class="participants-section">
+            <strong>Participantes:</strong>
+            ${participantsInnerContent}
+          </div>
+        `;
 
         activityCard.innerHTML = `
           <h4>${name}</h4>
